@@ -1,3 +1,6 @@
+//  SPDX-FileCopyrightText: 2022 Jamon Terrell <github@jamonterrell.com>
+//  SPDX-License-Identifier: MIT
+
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/pio.h"
