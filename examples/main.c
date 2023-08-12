@@ -17,7 +17,7 @@ int main() {
  
     while (true) {
         sleep_ms(1000);
-        pio_sm_exec_wait_blocking(pio, sm, pio_encode_in(pio_x, 32));
+        pio_sm_exec_wait_blocking(pio, sm, pio_encode_in(pio_y, 32));
         uint x = pio_sm_get_blocking(pio, sm);
         printf("%d\n", x);
     }

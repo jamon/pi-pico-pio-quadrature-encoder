@@ -28,6 +28,7 @@ wait_low:                   ; else
     jmp x--, nop4               ;
 nop4:                           ;
     mov x, !x                   ;
+    mov y, x                    ;
     jmp start                   ; }
 
 % c-sdk {

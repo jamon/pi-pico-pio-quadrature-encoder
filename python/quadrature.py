@@ -27,6 +27,7 @@ def encoder():
     jmp(x_dec, "nop4")
     label("nop4")
     mov(x, invert(x))
+    mov(y, x)
     wrap()
 
     
@@ -35,6 +36,6 @@ sm1.active(1)
 
 while(True):
     utime.sleep(1)
-    sm1.exec("in_(x, 32)")
+    sm1.exec("in_(y, 32)")
     x = sm1.get()
     print(x)

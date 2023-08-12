@@ -13,7 +13,7 @@
 // ---------- //
 
 #define quadrature_wrap_target 0
-#define quadrature_wrap 12
+#define quadrature_wrap 13
 
 static const uint16_t quadrature_program_instructions[] = {
             //     .wrap_target
@@ -29,14 +29,15 @@ static const uint16_t quadrature_program_instructions[] = {
     0xa029, //  9: mov    x, !x                      
     0x004b, // 10: jmp    x--, 11                    
     0xa029, // 11: mov    x, !x                      
-    0x0000, // 12: jmp    0                          
+    0xa041, // 12: mov    y, x                       
+    0x0000, // 13: jmp    0                          
             //     .wrap
 };
 
 #if !PICO_NO_HARDWARE
 static const struct pio_program quadrature_program = {
     .instructions = quadrature_program_instructions,
-    .length = 13,
+    .length = 14,
     .origin = -1,
 };
 
