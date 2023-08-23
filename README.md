@@ -25,7 +25,7 @@ The value of x is an absolute value of the encoder (initialized to 0 on startup)
 PIO pio = pio0;
 uint offset = pio_add_program(pio, &quadrature_program);
 uint sm = pio_claim_unused_sm(pio, true);
-quadrature_program_init(pio, sm, offset, QUADRATURE_A_PIN, QUADRATURE_B_PIN);
+quadratureA_program_init(pio, sm, offset, QUADRATURE_A_PIN, QUADRATURE_B_PIN);
  ```
 * Read the current value of the encoder from the state machine
 ```c
@@ -56,7 +56,7 @@ int main() {
     offset = pio_add_program(pio, &quadrature_program);
     sm = pio_claim_unused_sm(pio, true);
 
-    quadrature_program_init(pio, sm, offset, QUADRATURE_A_PIN, QUADRATURE_B_PIN);
+    quadratureA_program_init(pio, sm, offset, QUADRATURE_A_PIN, QUADRATURE_B_PIN);
 
     gpio_set_irq_enabled_with_callback(QUADRATURE_SW_PIN, GPIO_IRQ_EDGE_FALL, true, &quadrature_sw_callback);
 

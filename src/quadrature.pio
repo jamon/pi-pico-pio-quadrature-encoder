@@ -1,37 +1,93 @@
-; PIO Quadrature Encoder
-;
-;  by Jamon Terrell <github@jamonterrell.com>
-;
-; 
-;  SPDX-FileCopyrightText: 2022 Jamon Terrell <github@jamonterrell.com>
+;  SPDX-FileCopyrightText: 
+;  2022 Jamon Terrell <github@jamonterrell.com>
+;  2023 Arda Alıcı    <ardayaozel@hotmail.com>
+
 ;  SPDX-License-Identifier: MIT
 
-.program quadrature
+.program quadratureB
 start:
-    wait 0 pin 0            ; wait for B == 0
-    jmp PIN, wait_high      ; if A == 0
-    mov x, !x                   ; x++ {
-    jmp x--, nop1               ;
-nop1:                           ;
-    mov x, !x                   ; }
-; BUG?!?! NO JMP OVER ELSE HERE?!  somehow it works though!?
-wait_high:
-    jmp x--, nop2           ; x-- {
-nop2:                       ; }
+B_Low:  ; waiting for b low
+    wait 0 pin 0             ; wait for B == 0
+    jmp PIN, B_low_A_high          ; if A == 1
+B_low_A_low:
+    jmp x--, nop1
+nop1:
+    jmp B_High
 
-    wait 1 PIN 0            ; wait for B == 1
-    jmp PIN, wait_low       ; if A == 0
-    jmp x--, nop3               ; x-- {
-nop3:                           ; }
-wait_low:                   ; else
-    mov x, !x                   ; x++ {
-    jmp x--, nop4               ;
-nop4:                           ;
-    mov x, !x                   ;
-    jmp start                   ; }
+B_low_A_high:                  ;increment the scratch register x //invert decrement invert = increment !x x-- !x
+    mov Y, !X                ;increment
+    jmp Y--, nop2            ;increment
+nop2:                       ;increment       
+    mov X, !Y               ;increment
+    jmp B_High
+
+
+B_High:  ; waiting for b high
+    wait 0 pin 1             ; wait for B == 1
+    jmp PIN, B_High_A_High         ; if A == 1
+B_High_A_low:   ;increment the scratch register x //invert decrement invert = increment !x x-- !x
+    mov Y, !X                ;increment
+    jmp Y--, nop3            ;increment
+nop3:                    ;increment       
+    mov X, !Y               ;increment
+    jmp B_Low
+
+B_High_A_High:                  
+    jmp x--, nop4
+nop4:
+    jmp B_Low
+
+
 
 % c-sdk {
-static inline void quadrature_program_init(PIO pio, uint sm, uint offset, uint a_pin, uint b_pin) {
+static inline void quadratureB_program_init(PIO pio, uint sm, uint offset, uint a_pin, uint b_pin) {
+    pio_sm_config c = quadrature_program_get_default_config(offset);
+
+    sm_config_set_in_pins(&c, a_pin);
+    sm_config_set_jmp_pin(&c, b_pin);
+    sm_config_set_in_shift(&c, false, true, 32);
+    pio_sm_init(pio, sm, offset, &c);
+    pio_sm_set_enabled(pio, sm, true);
+}
+%}
+
+
+.program quadratureA
+start:
+A_Low:  ; waiting for b low
+    wait 0 pin 0             ; wait for A == 0
+    jmp PIN, A_low_B_high          ; if B == 1
+A_low_B_low:
+    mov Y, !X                ;increment
+    jmp Y--, nop5            ;increment
+nop5:                    ;increment       
+    mov X, !Y               ;increment
+    jmp A_High 
+
+A_low_B_high:                  ;increment the scratch register x //invert decrement invert = increment !x x-- !x
+    jmp x--, nop6
+nop6:
+    jmp A_High
+
+A_High:  ; waiting for b high
+    wait 0 pin 1             ; wait for A == 1
+    jmp PIN, A_high_B_high          ; if B == 1
+A_high_B_low:
+    jmp x--, nop7
+nop7:
+    jmp A_Low
+
+A_high_B_high:                  ;increment the scratch register x //invert decrement invert = increment !x x-- !x
+    mov Y, !X                ;increment
+    jmp Y--, nop8            ;increment
+nop8:                       ;increment       
+    mov X, !Y               ;increment
+    jmp A_Low
+
+
+
+% c-sdk {
+static inline void quadratureA_program_init(PIO pio, uint sm, uint offset, uint a_pin, uint b_pin) {
     pio_sm_config c = quadrature_program_get_default_config(offset);
 
     sm_config_set_in_pins(&c, b_pin);
