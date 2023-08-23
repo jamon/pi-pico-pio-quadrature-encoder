@@ -67,8 +67,8 @@ int main() {
 See [python/quadrature.py](python/quadrature.py).
 
 # Example
-See [src/2 state main.c](src/2 state main.c) for a 2 sub-state example that reads the value once per second and outputs it.   
-See [src/4 state main.c](src/4 state main.c) for a 4 sub-state example that reads the value once per second and outputs it.   
+See src/2 state main.c for a 2 sub-state example that reads the value once per second and outputs it.   
+See src/4 state main.c for a 4 sub-state example that reads the value once per second and outputs it.   
 
 # License
 Licensed under the [MIT License](LICENSE)
