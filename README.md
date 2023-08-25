@@ -23,9 +23,9 @@ The value of x is an absolute value of the encoder (initialized to 0 on startup)
 * Initialize a PIO state machine
 ```c
 PIO pio = pio0;
-uint offset = pio_add_program(pio, &quadrature_program);
+uint offset = pio_add_program(pio, &quadratureA_program);
 uint sm = pio_claim_unused_sm(pio, true);
-quadrature_program_init(pio, sm, offset, QUADRATURE_A_PIN, QUADRATURE_B_PIN);
+quadratureA_program_init(pio, sm, offset, QUADRATURE_A_PIN, QUADRATURE_B_PIN);
  ```
 * Read the current value of the encoder from the state machine
 ```c
@@ -53,10 +53,10 @@ void quadrature_sw_callback(uint gpio, uint32_t events) {
 int main() {
     stdio_init_all();
 
-    offset = pio_add_program(pio, &quadrature_program);
+    offset = pio_add_program(pio, &quadratureA_program);
     sm = pio_claim_unused_sm(pio, true);
 
-    quadrature_program_init(pio, sm, offset, QUADRATURE_A_PIN, QUADRATURE_B_PIN);
+    quadratureA_program_init(pio, sm, offset, QUADRATURE_A_PIN, QUADRATURE_B_PIN);
 
     gpio_set_irq_enabled_with_callback(QUADRATURE_SW_PIN, GPIO_IRQ_EDGE_FALL, true, &quadrature_sw_callback);
 
@@ -67,7 +67,7 @@ int main() {
 See [python/quadrature.py](python/quadrature.py).
 
 # Example
-See [src/main.c](src/main.c) for an example that reads the value once per second and outputs it.   
+See the examples folder to see both 2 sub-state and 4 sub-state versions that write the value every 1 second.
 
 # License
 Licensed under the [MIT License](LICENSE)
