@@ -1,4 +1,6 @@
-;  SPDX-FileCopyrightText: 2022 Jamon Terrell <github@jamonterrell.com>
+;  SPDX-FileCopyrightText: 
+;        2022 Jamon Terrell <github@jamonterrell.com>
+;        2023 Arda Alıcı     <ardayaozel@hotmail.com>
 ;  SPDX-License-Identifier: MIT
 
 .program quadratureB
