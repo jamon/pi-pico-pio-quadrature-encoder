@@ -37,8 +37,7 @@ int main()
         int32_t countB = pio_sm_get_blocking(encoderPIO, smB);
 
         int32_t x = countA + countB;
-
-        uint x = pio_sm_get_blocking(pio, sm);
+        
         printf("%d\n", x);
     }
 }
